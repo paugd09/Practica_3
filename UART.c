@@ -1,32 +1,34 @@
 #include "lib/include.h"
 
-extern void Configurar_UART0(void)
+extern void Configurar_UART2(void)
 {
-    SYSCTL->RCGCUART  = (1<<0);   //Paso 1 (RCGCUART) pag.344 UART/modulo0 0->Disable 1->Enable
-    SYSCTL->RCGCGPIO |= (1<<0);     //Paso 2 (RCGCGPIO) pag.340 Enable clock port A
+    SYSCTL->RCGCUART  = (1<<2);   //Paso 1 (RCGCUART) pag.344 UART/modulo0 0->Disable 1->Enable
+    SYSCTL->RCGCGPIO |= (1<<3);     //Paso 2 (RCGCGPIO) pag.340 Enable clock port A
     //(GPIOAFSEL) pag.671 Enable alternate function
-    GPIOA->AFSEL = (1<<1) | (1<<0);
+    GPIOD-> LOCK= 0X4C4F434B;
+    GPIOD-> CR = 0XF0; 
+    GPIOD->AFSEL = (1<<6) | (1<<7);
     //GPIO Port Control (GPIOPCTL) PA0-> U0Rx PA1-> U0Tx pag.688
-    GPIOA->PCTL = (GPIOA->PCTL&0xFFFFFF00) | 0x00000011;// (1<<0) | (1<<4);//0x00000011
+    GPIOD->PCTL = (GPIOD->PCTL&0xFFFFFF00) | 0x11000000;// (1<<0) | (1<<4);//0x00000011
     // GPIO Digital Enable (GPIODEN) pag.682
-    GPIOA->DEN = (1<<0) | (1<<1);//PA1 PA0
+    GPIOD->DEN = (1<<6) | (1<<7);//PA1 PA0
     //UART0 UART Control (UARTCTL) pag.918 DISABLE!!
-    UART0->CTL = (0<<9) | (0<<8) | (0<<0);
+    UART2->CTL = (0<<9) | (0<<8) | (0<<0);
 
     // UART Integer Baud-Rate Divisor (UARTIBRD) pag.914
     /*
     BRD = 25,000,000 / (16*57600) = 27.1267
     UARTFBRD[DIVFRAC] = integer(.1267 * 64 + 0.5)
     */
-    UART0->IBRD = 27;
+    UART2->IBRD = 54;
     // UART Fractional Baud-Rate Divisor (UARTFBRD) pag.915
-    UART0->FBRD = 7;
+    UART2->FBRD = 17;
     //  UART Line Control (UARTLCRH) pag.916
-    UART0->LCRH = (0x3<<5)|(1<<4);
+    UART2->LCRH = (0x3<<5)|(1<<4);
     //  UART Clock Configuration(UARTCC) pag.939
-    UART0->CC =(0<<0);
+    UART2->CC =(0<<0);
     //Disable UART0 UART Control (UARTCTL) pag.918
-    UART0->CTL = (1<<0) | (1<<8) | (1<<9);
+    UART2->CTL = (1<<0) | (1<<8) | (1<<9);
 
 
 
@@ -38,15 +40,15 @@ extern char readChar(void)
     //UART DR data 906
     int v;
     char c;
-    while((UART0->FR & (1<<4)) != 0 );
-    v = UART0->DR & 0xFF;
+    while((UART2->FR & (1<<4)) != 0 );
+    v = UART2->DR & 0xFF;
     c = v;
     return c;
 }
 extern void printChar(char c)
 {
-    while((UART0->FR & (1<<5)) != 0 );
-    UART0->DR = c;
+    while((UART2->FR & (1<<5)) != 0 );
+    UART2->DR = c;
 }
 extern void printString(char* string)
 {
@@ -75,6 +77,27 @@ extern char * readString(char delimitador)
 
    return string;
 
+}
+extern void invertirString (char *string, int i)
+{
+    char aux;
+   for (int j= 0; j < i/2; j++){
+        aux = string [j];
+        string[j]=string[i- 1 -j];
+        string[i- 1 -j]=aux;
+    }
+}
+extern void int number (char *string, char *num, int i){
+    int i =0;
+    int p =0;
+    while (1<(i* 2)){
+        num[1]=string[p];
+        i++;
+        num[1]=( unsigned char )(49 +p);
+        p++;
+        i++;
+    }
+   string = num;
 }
 //Experimento 2
 

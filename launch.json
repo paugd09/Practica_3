@@ -11,7 +11,7 @@
     "targetArchitecture": "arm",
     "filterStderr": true,
     "serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
-    "program": "C:\\Users\\lance\\Desktop\\santana\\Practica_3TM4C123\\gcc\\main.axf",
+    "program": "C:\\Users\\pau09\\Downloads\\Practica_1-hoja_1\\Practica3\\Practica_3TM4C129XL\\gcc\\main.axf",
     "args": [],
     "stopAtEntry": false,
     "cwd": "${workspaceRoot}",
@@ -20,7 +20,7 @@
     "MIMode": "gdb",
     "setupCommands": [
     { "text" : "target extended-remote :3333"},
-    { "text" : "load C:/Users/lance/Desktop/santana/Practica_3TM4C123/gcc/main.axf"}
+    { "text" : "load C:/Users/pau09/Downloads/Practica_1-hoja_1/Practica3/Practica_3TM4C129XL/gcc/main.axf"}
     ]
     }
     ]
