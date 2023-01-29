@@ -1,8 +1,13 @@
+//Paulina Cruz Gudiño
+//Practica 3 Configuracion del UART_2 -fclk 50MHZ Baud-rate 57600// Experimento 2 Nombre
+//El envio es su nombre (rave) invertirlo y regresarlo con numeros consecutivos entre letras (e1v2a3r) 
+//Microocontroladores
+
 #include "lib/include.h"
 
 int main(void)
 {
-    uint16_t valor = 0;
+   uint16_t valor = 0;
     char c='5';
     //char b='a';
     Configurar_PLL(_25MHZ);  //Confiuracion de velocidad de reloj
